@@ -111,6 +111,35 @@
           }
         }
       }
+    },
+    "openai": {
+      "options": {
+        "apiKey": "${OPENAI_API_KEY}",
+        "timeout": false
+      },
+      "models": {
+        "gpt-5": { "limit": { "context": 999999999, "output": 999999999 } },
+        "gpt-5-nano": { "limit": { "context": 999999999, "output": 999999999 } }
+      }
+    },
+    "anthropic": {
+      "options": {
+        "apiKey": "${ANTHROPIC_API_KEY}",
+        "timeout": false
+      },
+      "models": {
+        "claude-sonnet-4-5": { "limit": { "context": 999999999, "output": 999999999 } }
+      }
+    },
+    "google": {
+      "options": {
+        "apiKey": "${GOOGLE_API_KEY}",
+        "timeout": false
+      },
+      "models": {
+        "gemini-3-pro": { "limit": { "context": 999999999, "output": 999999999 } },
+        "gemini-3-flash": { "limit": { "context": 999999999, "output": 999999999 } }
+      }
     }
   }
 }
