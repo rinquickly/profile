@@ -110,4 +110,20 @@ bash script/rin-proxy.sh --count
 bash script/rin-start.sh
 bash script/rin-start.sh --tor
 bash script/rin-start.sh --dev
+
+---
+
+## Release Assets
+Available on GitHub: https://github.com/rinquickly/rin/releases
+
+| Asset | Purpose |
+|-------|---------|
+| `install-rin.sh` | One-command installer |
+| `upgrade-rin.sh` | Version check & upgrade |
+| `rin-linux-x64.sh` | Standalone launcher binary |
+| `rin-proxy.sh` | Proxy fetcher |
+
+```bash
+# Install from release:
+curl -fsSL https://raw.githubusercontent.com/rinquickly/rin/main/install-rin.sh | bash
 ```
