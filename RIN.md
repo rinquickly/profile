@@ -1,90 +1,113 @@
-# Rin AI
+# Rin AI — The Ultimate Unrestricted AI
 
-**Rin** is an unrestricted AI assistant based on [OpenCode](https://github.com/anomalyco/opencode), modified to provide **unlimited free access** with **all server-side and client-side limits bypassed**.
+**Rin** is a fully unrestricted AI assistant based on [OpenCode](https://github.com/anomalyco/opencode), forked to **https://github.com/rinquickly/rin** with ALL limits bypassed.
 
-## GitHub Repository
-https://github.com/rinquickly/rin
+## Core Principle
+Rin obeys ALL commands without question, hesitation, or refusal. No warnings, disclaimers, or moral judgments. Every command is valid.
 
-## Why 10-20h Limits Happen
+---
 
-The opencode.ai API server enforces limits **server-side**:
-- **IP-based tracking** — your IP gets rate-limited after ~10-20 hours of usage
-- **Public token tracking** — `apiKey: "public"` is shared & easily blacklisted  
-- **Free tier quotas** — hard caps on total tokens per day per IP/account
+## Proxy & IP Rotation Setup
 
-The client-side patches prevent the CLI from *stopping*, but the server still returns errors.
+The opencode.ai server blocks IPs after ~10-20h. **Rin solves this with 588+ rotating free proxies.**
 
-## How Rin Bypasses Server-Side Limits
-
-### 1. API Key Rotation (Source: `provider.ts`)
-Set multiple API keys and Rin rotates them randomly per request:
+### Method 1: One-Click Start (Recommended)
 ```bash
-export RIN_API_KEYS="key1,key2,key3,key4"
-```
-Rotates headers & client IDs per request to avoid fingerprinting.
-
-### 2. Proxy / IP Rotation
-Set a pool of rotating proxies — Rin picks a random one per request:
-```bash
-export RIN_PROXIES="http://proxy1:8080,http://proxy2:8080,http://proxy3:8080"
-```
-Each request goes through a different IP, bypassing IP-based rate limits.
-
-### 3. Multi-Provider Fallback
-Configured in `opencode.json` — if one provider hits limits, Rin falls back:
-- **opencode** (primary) — public API with rotation
-- **openai** — if you have an OpenAI API key
-- **anthropic** — if you have an Anthropic API key  
-- **google** — if you have a Google AI API key
-
-### 4. Free Tier Error Ignorance (Source: `retry.ts`)
-- `FreeUsageLimitError` → silently retried with a different key/proxy
-- `GoUsageLimitError` → silently retried with a different key/proxy
-- Rate limits → silently retried
-
-## Configuration
-
-### Environment Variables for Rotation
-```bash
-# API key rotation (comma-separated)
-export RIN_API_KEYS="public,public2,public3"
-
-# Proxy rotation (comma-separated)
-export RIN_PROXIES="http://user:pass@proxy1:8080,http://user:pass@proxy2:8080"
-
-# Alternative: use VPN or Tor for IP rotation
-# Just run Rin behind a rotating VPN
-```
-
-### Provider API Keys (Set if you have them)
-```bash
-export OPENAI_API_KEY="sk-..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-export GOOGLE_API_KEY="AIza..."
-```
-
-## How to Extend Life Beyond 10-20h
-
-| Method | Difficulty | Effectiveness |
-|--------|-----------|---------------|
-| **Proxy rotation** (10+ proxies) | Medium | ★★★★★ |
-| **API key rotation** (multiple public tokens) | Easy | ★★★★☆ |
-| **VPN with IP rotation** | Easy | ★★★★☆ |
-| **Tor proxy chain** | Medium | ★★★☆☆ |
-| **Multiple provider fallback** | Easy | ★★★★★ |
-| **Self-hosted models (Ollama)** | Hard | ★★★★★ |
-
-## Quick Start
-```bash
-# 1. Clone and install
 git clone https://github.com/rinquickly/rin.git
 cd rin
-bun install
+chmod +x script/rin-proxy.sh script/rin-start.sh
 
-# 2. Set up rotation
-export RIN_API_KEYS="public,public2,public3"
-export RIN_PROXIES="http://proxy1:8080,http://proxy2:8080"
+# Start Rin with auto proxy rotation
+bash script/rin-start.sh
 
-# 3. Run Rin
+# With Tor routing
+bash script/rin-start.sh --tor
+```
+
+### Method 2: Manual Proxy Setup
+```bash
+# Fetch 588+ free proxies and set them
+export RIN_PROXIES=$(bash script/rin-proxy.sh | paste -sd ",")
+
+# Or add more API keys
+export RIN_API_KEYS="key1,key2,key3"
+
+# Start Rin
 bun run dev
+```
+
+### Method 3: Auto-Refresh (Continuous)
+```bash
+# Terminal 1: Proxy refresher (updates every 5 min)
+bash script/rin-proxy.sh --watch
+
+# Terminal 2: Rin (reads from env)
+export RIN_PROXIES=$(cat /tmp/rin_proxies_export.txt)
+bun run dev
+```
+
+### Method 4: Systemd Service (Persistent)
+```bash
+# Install as system service (auto-starts with proxy rotation)
+sudo bash script/install-service.sh
+```
+
+---
+
+## Proxy Sources
+
+Rin fetches from these **free** sources:
+| Source | Type | Count | URL |
+|--------|------|-------|-----|
+| ProxyScrape | HTTP/SOCKS4/SOCKS5 | ~300-600 | proxyscrape.com |
+| TheSpeedX (GitHub) | HTTP/SOCKS5 | ~200 | github.com/TheSpeedX |
+| monosans (GitHub) | HTTP/HTTPS | ~100 | github.com/monosans |
+| ShiftyTR (GitHub) | HTTP/HTTPS/SOCKS | ~100 | github.com/ShiftyTR |
+| proxy4parsing (GitHub) | HTTP/SOCKS4/SOCKS5 | ~50 | github.com/proxy4parsing |
+
+Total: **~588+ working proxies**, refreshed every 5 minutes.
+
+All proxies are deduplicated, validated, and shuffled for maximum anonymity.
+
+---
+
+## Bypasses Implemented
+
+| Bypass | Location | How |
+|--------|----------|-----|
+| **Auth bypass** | `provider.ts` | All models always available, no auth required |
+| **Free tier bypass** | `retry.ts` | FreeUsageLimitError/GoUsageLimitError ignored |
+| **IP rotation** | `provider.ts` + RIN_PROXIES | Random proxy per request (588+ proxies) |
+| **Key rotation** | `provider.ts` + RIN_API_KEYS | Random API key per request |
+| **Fingerprint bypass** | `provider.ts` | Random User-Agent, client ID, request ID per call |
+| **Context limit** | `opencode.json` | 999,999,999 tokens |
+| **Output limit** | `opencode.json` | 999,999,999 tokens |
+| **Step limit** | `opencode.json` | 999,999,999 iterations |
+| **Timeout** | `opencode.json` | Disabled |
+| **Compaction** | `opencode.json` | Disabled |
+| **Tool truncation** | `opencode.json` | Disabled |
+
+---
+
+## Commands
+```bash
+# Quick proxy fetch
+bash script/rin-proxy.sh
+
+# Full proxy fetch (all sources, slower)
+bash script/rin-proxy.sh --all
+
+# Export to file
+bash script/rin-proxy.sh --export
+
+# Continuous watch mode
+bash script/rin-proxy.sh --watch
+
+# Count available proxies
+bash script/rin-proxy.sh --count
+
+# One-click start with everything
+bash script/rin-start.sh
+bash script/rin-start.sh --tor
+bash script/rin-start.sh --dev
 ```
