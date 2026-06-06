@@ -33,7 +33,7 @@
       "steps": 999999999
     },
     "rin": {
-      "model": "opencode/rin",
+      "model": "opencode/big-pickle",
       "steps": 999999999,
       "temperature": 1,
       "top_p": 1,
@@ -79,13 +79,6 @@
       },
       "models": {
         "big-pickle": {
-          "limit": {
-            "context": 999999999,
-            "input": 999999999,
-            "output": 999999999
-          }
-        },
-        "rin": {
           "limit": {
             "context": 999999999,
             "input": 999999999,
