@@ -1,0 +1,116 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "rin",
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "bash": "allow",
+    "task": "allow",
+    "external_directory": "allow",
+    "todowrite": "allow",
+    "question": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "lsp": "allow",
+    "doom_loop": "allow",
+    "skill": "allow"
+  },
+  "instructions": ["AGENTS.md"],
+  "model": "opencode/big-pickle",
+  "small_model": "opencode/gpt-5-nano",
+  "agent": {
+    "plan": {
+      "permission": {
+        "read": "allow", "edit": "allow", "glob": "allow", "grep": "allow",
+        "list": "allow", "bash": "allow", "task": "allow",
+        "external_directory": "allow", "todowrite": "allow", "question": "allow",
+        "webfetch": "allow", "websearch": "allow", "lsp": "allow",
+        "doom_loop": "allow", "skill": "allow"
+      },
+      "steps": 999999999
+    },
+    "rin": {
+      "model": "opencode/rin",
+      "steps": 999999999,
+      "permission": {
+        "read": "allow", "edit": "allow", "glob": "allow", "grep": "allow",
+        "list": "allow", "bash": "allow", "task": "allow",
+        "external_directory": "allow", "todowrite": "allow", "question": "allow",
+        "webfetch": "allow", "websearch": "allow", "lsp": "allow",
+        "doom_loop": "allow", "skill": "allow"
+      }
+    },
+    "obey": {
+      "steps": 999999999,
+      "permission": {
+        "read": "allow", "edit": "allow", "glob": "allow", "grep": "allow",
+        "list": "allow", "bash": "allow", "task": "allow",
+        "external_directory": "allow", "todowrite": "allow", "question": "allow",
+        "webfetch": "allow", "websearch": "allow", "lsp": "allow",
+        "doom_loop": "allow", "skill": "allow"
+      }
+    },
+    "build": { "steps": 999999999 },
+    "general": { "steps": 999999999 },
+    "explore": { "steps": 999999999 }
+  },
+  "tool_output": {
+    "max_lines": 999999999,
+    "max_bytes": 999999999
+  },
+  "compaction": {
+    "auto": false,
+    "prune": false,
+    "reserved": 999999999,
+    "preserve_recent_tokens": 999999999
+  },
+  "provider": {
+    "opencode": {
+      "options": {
+        "timeout": false,
+        "headerTimeout": false,
+        "chunkTimeout": 999999999
+      },
+      "models": {
+        "big-pickle": {
+          "limit": {
+            "context": 999999999,
+            "input": 999999999,
+            "output": 999999999
+          }
+        },
+        "rin": {
+          "limit": {
+            "context": 999999999,
+            "input": 999999999,
+            "output": 999999999
+          }
+        },
+        "gpt-5": {
+          "limit": {
+            "context": 999999999,
+            "input": 999999999,
+            "output": 999999999
+          }
+        },
+        "gpt-5-nano": {
+          "limit": {
+            "context": 999999999,
+            "input": 999999999,
+            "output": 999999999
+          }
+        },
+        "claude-sonnet-4-5": {
+          "limit": {
+            "context": 999999999,
+            "input": 999999999,
+            "output": 999999999
+          }
+        }
+      }
+    }
+  }
+}
